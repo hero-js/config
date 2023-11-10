@@ -64,24 +64,21 @@ export default class Config {
    * @template T - The expected type of the value.
    * @param {string} key - The key associated with the value.
    * @param {IGetConfigData<T>} [options] - Options for data retrieval.
-   * @returns {T|false} - The retrieved value, or the default value if specified, or `false` if invalid.
+   * @returns {T|undefined} - The retrieved value, or the default value if specified, or `false` if invalid.
    */
-  public get<T>(
-    key: string,
-    options: IGetconfigData<T> = {}
-  ): T | false | undefined {
+  public get<T>(key: string, options: IGetconfigData<T> = {}): T | undefined {
     const { defaultValue, invalidValues = [], orInvalidValues = [] } = options;
     const value: T = this.config[key];
 
     let test = this.testInvalidValue(value, orInvalidValues);
 
-    if (test) return defaultValue ?? false;
+    if (test) return defaultValue;
 
     if (invalidValues.length === 0) return value ?? defaultValue;
 
     test = this.testInvalidValue(value, invalidValues);
 
-    return test ? defaultValue ?? false : value;
+    return test ? defaultValue : value;
   }
 
   /**
@@ -92,10 +89,7 @@ export default class Config {
    * @returns {T} - The retrieved value.
    * @throws {Error} - If the value is not found in the config.
    */
-  getOrThrow<T extends string = string>(
-    key: string,
-    options: IInvalid = {}
-  ): T | false {
+  getOrThrow<T = any>(key: string, options: IInvalid = {}): T {
     const {
       orInvalidValues = [],
       invalidValues = [],
@@ -126,7 +120,7 @@ export default class Config {
   ): number | undefined {
     const value = this.get(key, options);
 
-    if (value === undefined) return value;
+    if (!value) return value;
 
     return parseInt(String(value), 10);
   }
@@ -170,11 +164,13 @@ export default class Config {
     const { strict = false } = options;
     const value = this.get(key, options);
 
-    if (value === undefined) return value;
+    if (value === undefined || value === null) return undefined;
 
-    if (strict && ![1, '1', true, 'true'].includes(value)) return false;
+    if (strict) return ['1', 'true'].includes(String(value).toLowerCase());
 
-    return value ? true : false;
+    return ['0', 'false'].includes(String(value).toLowerCase())
+      ? false
+      : Boolean(value);
   }
 
   /**

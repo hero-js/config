@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2023-11-10
+
+### Added
+
+- Better types
+
 ## [1.0.0] - 2023-11-04
 
 ### Added
