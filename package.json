@@ -1,6 +1,6 @@
 {
   "name": "@hero-js/config",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "A flexible and easy-to-use configuration management library for Node.js applications. It allows you to manage your application's configuration settings, including environment variables, with ease.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -8,6 +8,8 @@
     "test": "jest",
     "build": "rm -rf ./dist & tsc && cp -r ./dist/src/. ./dist && rm -rf ./dist/src",
     "win-build": "rmdir /s /q .\\dist & tsc && xcopy /s /e /Y .\\dist\\src dist && rmdir /s /q .\\dist\\src",
+    "l-publish": "npm run build && npm --access=public publish",
+    "win-publish": "npm run win-build && npm --access=public publish",
     "generate-doc": "typedoc"
   },
   "repository": {

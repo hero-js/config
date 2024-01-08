@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.2] - 2024-01-08
+
+### Added
+
+- Switch from pnpm to npm
+
 ## [1.1.0] - 2023-11-10
 
 ### Added
